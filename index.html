@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wszystkiego najlepszego!</title>
+
+<!-- SEO -->
+<meta name="description" content="Kartka urodzinowa online z animowanymi balonami i konfetti. Wyślij wyjątkowe życzenia urodzinowe w internecie!">
+<meta name="keywords" content="kartka urodzinowa, życzenia, online, balony, konfetti, urodziny, prezent">
+<meta name="author" content="Twoje Imię">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Kartka Urodzinowa z Balonami i Konfetti">
+<meta property="og:description" content="Wyjątkowa animowana kartka urodzinowa online. Wyślij radość i kolorowe życzenia!">
+<meta property="og:image" content="https://via.placeholder.com/600x315.png?text=Kartka+Urodzinowa">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kartka Urodzinowa z Balonami i Konfetti">
+<meta name="twitter:description" content="Wyjątkowa animowana kartka urodzinowa online. Wyślij radość i kolorowe życzenia!">
+<meta name="twitter:image" content="https://via.placeholder.com/600x315.png?text=Kartka+Urodzinowa">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(to top right, #ffccff, #99ccff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Comic Sans MS", cursive;
+  }
+
+  h1 {
+    font-size: 3em;
+    color: #ff3399;
+    text-shadow: 2px 2px 5px #fff;
+    z-index: 2;
+    animation: pop 1.5s ease-in-out infinite alternate;
+    text-align: center;
+  }
+
+  @keyframes pop {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+  }
+
+  .balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 80px;
+    height: 100px;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: floatUp 10s ease-in-out infinite;
+  }
+
+  .string {
+    position: absolute;
+    width: 2px;
+    height: 80px;
+    background: #555;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(10deg); opacity: 0; }
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .message {
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+    max-width: 600px;
+    z-index: 2;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎉 Wszystkiego najlepszego Kochanie! 🎂</h1>
+
+<p class="message">
+Wszystkiego najlepszego kochanie z okazji twoich 19-tych urodzin! Wiem, że może to nie jest coś drogiego czy wyjątkowego, ale jak to mówią – liczy się gest. Chcę Ci życzyć dużo szczęścia, zdrowia, pomyślności i wytrwałości, abyś mocno się nie stresowała egzaminami i maturą. Chcę Ci powiedzieć, że Cię kocham i jestem z Ciebie dumny z każdego Twojego małego kroczku. Bywało ciężko pomiędzy nami, ale daliśmy radę i damy. Kocham Cię! Sto lat! 💖
+</p>
+
+<!-- Baloniki -->
+<div class="balloon" style="left:10%; background:#ff6666; animation-delay:0s;"><div class="string"></div></div>
+<div class="balloon" style="left:30%; background:#66ccff; animation-delay:2s;"><div class="string"></div></div>
+<div class="balloon" style="left:50%; background:#ffcc33; animation-delay:4s;"><div class="string"></div></div>
+<div class="balloon" style="left:70%; background:#99ff99; animation-delay:6s;"><div class="string"></div></div>
+<div class="balloon" style="left:90%; background:#ff99ff; animation-delay:8s;"><div class="string"></div></div>
+
+<!-- Konfetti -->
+<canvas id="confetti"></canvas>
+
+<script>
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  let pieces = [];
+  const colors = ['#ff3366', '#33ccff', '#ffcc33', '#99ff99', '#cc99ff', '#ffffff'];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function createConfetti() {
+    for (let i = 0; i < 150; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        size: Math.random() * 10 + 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        speed: Math.random() * 3 + 2,
+        rotation: Math.random() * 360
+      });
+    }
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.fillStyle = p.color;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      ctx.restore();
+      p.y += p.speed;
+      p.rotation += 5;
+      if (p.y > canvas.height) p.y = -10;
+    });
+    requestAnimationFrame(drawConfetti);
+  }
+
+  createConfetti();
+  drawConfetti();
+</script>
+
+</body>
+</html>
